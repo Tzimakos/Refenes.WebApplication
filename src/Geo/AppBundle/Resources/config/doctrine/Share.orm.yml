@@ -1,0 +1,30 @@
+Geo\AppBundle\Entity\Share:
+  type: entity
+  table: shares
+
+  id:
+    id:
+      type: integer
+      nullable: false
+      id: true
+      generator:
+        strategy: IDENTITY
+
+  fields:
+    amount:
+      type: decimal
+      nullable: false
+      precision: 10
+      scale: 2
+
+  manyToOne:
+    transaction:
+      targetEntity: Transaction
+      joinColumn:
+        name: transaction_id
+        referencedColumnName: id
+    person:
+      targetEntity: Person
+      joinColumn:
+        name: person_id
+        referencedColumnName: id

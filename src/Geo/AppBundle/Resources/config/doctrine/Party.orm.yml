@@ -1,0 +1,30 @@
+Geo\AppBundle\Entity\Party:
+  type: entity
+  table: parties
+
+  id:
+    id:
+      type: integer
+      nullable: false
+      id: true
+      generator:
+        strategy: IDENTITY
+
+  fields:
+    name: ~
+    createdAt:
+      type: datetime
+      column: created_at
+
+  manyToMany:
+    persons:
+      targetEntity: Person
+      inversedBy: parties
+      joinTable:
+        name: parties_persons
+        joinColumns:
+          party_id:
+            referencedColumnName: id
+        inverseJoinColumns:
+          person_id:
+            referencedColumnName: id

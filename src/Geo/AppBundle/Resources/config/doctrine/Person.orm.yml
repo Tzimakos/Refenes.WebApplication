@@ -1,0 +1,19 @@
+Geo\AppBundle\Entity\Person:
+  type: entity
+  table: persons
+
+  id:
+    id:
+      type: integer
+      nullable: false
+      id: true
+      generator:
+        strategy: IDENTITY
+
+  fields:
+    name: ~
+
+  manyToMany:
+    parties:
+      targetEntity: Party
+      mappedBy: persons
