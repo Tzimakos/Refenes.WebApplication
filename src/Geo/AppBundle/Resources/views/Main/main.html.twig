@@ -1,65 +1,89 @@
-{% extends "GeoAppBundle::layout.html.twig" %}
+{% extends "GeoAppBundle::base.html.twig" %}
 
 {% block title %}
-  Parties
+    Parties
 {% endblock %}
 
 {% block javascripts %}
-  <script type="text/javascript">
-  $(function(){
-    function fetch_party(party_id,anchor){
-      $("#party").addClass("loading");
-      $(".ui.loading.segment:after").css("top","150px");
-      $(anchor).siblings().removeClass("active");
-      $(anchor).addClass("active");
-      $("#party").load("party/"+party_id,function(){
-        $("#party").removeClass("loading");
-      })
-    }
+    <script type="text/javascript">
+        $(function () {
+            function fetch_party(party_id, anchor) {
+                $("#party").addClass("loading");
+                $(".ui.loading.segment:after").css("top", "150px");
+                $(anchor).siblings().removeClass("active");
+                $(anchor).addClass("active");
+                $("#party").load("party/" + party_id, function () {
+                    $("#party").removeClass("loading");
+                })
+            }
 
-    $('.party').on("click",function(){
-      fetch_party($(this).data("id"),$(this))
-    })
+            $('.party').on("click", function () {
+                fetch_party($(this).data("id"), $(this))
+            })
 
-    if($(".party").first().length)
-    {
-      fetch_party($(".party").first().data("id"),$(".party").first());
-    }
-    else
-    {
-      $("#party").removeClass("loading");
-      _msg = $("<div/>",{
-        "class":"ui message",
-        "html":"<div class='header'>No partys found</div>"
-      })
-      $("#party").prepend(_msg);
-    }
-  })
-  </script>
+            if ($(".party").first().length) {
+                fetch_party($(".party").first().data("id"), $(".party").first());
+            }
+            else {
+                $("#party").removeClass("loading");
+                _msg = $("<div/>", {
+                    "class": "ui message",
+                    "html": "<div class='header'>No partys found</div>"
+                })
+                $("#party").prepend(_msg);
+            }
+        })
+    </script>
 {% endblock %}
 
 {% block content %}
-<div class="ui grid">
-  <div class="five wide column">
-    <div class="ui vertical pointing fluid menu">
-      <a href="partyform" class="item amodal">
-        <strong><i class="add icon"></i> Create new Party</strong>
-      </a>
-      {% for party in parties %}
-      <a class="item party" data-id="{{party.id}}">
+    <div class="ui grid">
+        {% if parties|length %}
+            <div class="five wide column">
+                <div class="ui vertical pointing fluid menu">
+                    <a href="partyform" class="item amodal">
+                        <strong><i class="add icon"></i> Create new Party</strong>
+                    </a>
+                    {% for party in parties %}
+                        <a class="item party" data-id="{{ party.id }}">
 
-        {% if party.balance > 0 %}
-        <div class="ui yellow label">{{party.balance}}&euro;</div>
+                            {% if party.balance > 0 %}
+                                <div class="ui yellow label">{{ party.balance }}&euro;</div>
+                            {% endif %}
+
+                            {{ party.name }}<br>
+                            <small>{{ party.createdAt|date("d/m/Y") }}</small>
+
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="eleven wide column">
+                <div id="party" class="ui segment"
+                     style="min-height: 200px;padding: 0 0 0 1px;box-shadow: none;border: solid 1px #EEE;"></div>
+            </div>
+        {% else %}
+            <div class="three wide column"></div>
+            <div class="ten wide column">
+                <div class="ui piled segment" style="margin-top: 50px;">
+                    <h3 class="ui header">Welcome <strong>{{ app.user.username|title }}</strong> to Refene!</h3>
+                    <h4>A few things to keep in mind</h4>
+
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci blanditiis dignissimos
+                        dolor doloribus ducimus eaque eius enim esse, fugit inventore
+                        ipsum magnam neque officiis possimus quaerat quas sit! Minus, tempora.</p>
+
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci blanditiis dignissimos
+                        dolor doloribus ducimus eaque eius enim esse, fugit inventore
+                        ipsum magnam neque officiis possimus quaerat quas sit! Minus, tempora.</p>
+
+                    <div class="ui divider"></div>
+
+                    <p>So... ready to create your first Party???. Click bellow...</p>
+                    <a href="partyform" class="ui button green fluid amodal">Add your first Party</a>
+
+                </div>
+            </div>
         {% endif %}
-
-        {{party.name}}<br><small>{{party.createdAt|date("d/m/Y")}}</small>
-
-      </a>
-      {% endfor %}
     </div>
-  </div>
-  <div class="eleven wide column">
-    <div id="party" class="ui segment" style="min-height: 200px;padding: 0 0 0 1px;box-shadow: none;border: solid 1px #EEE;"></div>
-  </div>
-</div>
 {% endblock %}
