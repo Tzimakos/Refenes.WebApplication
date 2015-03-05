@@ -1,10 +1,12 @@
 parameters:
-  app_name: "Refenes"
-  app_version: 0.1
+  project:
+    name: "Refenes"
+    version: 0.1
 
 services:
-#  twig.extension.globals_extension:
-#    class: Geo\AppBundle\Twig\GlobalsExtension
-#    tags:
-#      - { name: twig.extension }
-#
+  twig.extension.globals_extension:
+    class: Geo\AppBundle\Twig\GlobalsExtension
+    arguments:
+        - @service_container
+    tags:
+      - { name: twig.extension }
