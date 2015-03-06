@@ -10,7 +10,7 @@ class Transaction
 
     private $id;
     private $party;
-    private $person;
+    private $payer;
     private $amount;
     private $shares;
     private $comment;
@@ -113,9 +113,9 @@ class Transaction
      * @param \Geo\AppBundle\Entity\Person $person
      * @return Transaction
      */
-    public function setPerson(\Geo\AppBundle\Entity\Person $person = null)
+    public function setPayer(\Geo\AppBundle\Entity\Person $payer = null)
     {
-        $this->person = $person;
+        $this->payer = $payer;
 
         return $this;
     }
@@ -125,9 +125,9 @@ class Transaction
      *
      * @return \Geo\AppBundle\Entity\Person 
      */
-    public function getPerson()
+    public function getPayer()
     {
-        return $this->person;
+        return $this->payer;
     }
 
     /**

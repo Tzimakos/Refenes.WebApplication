@@ -168,4 +168,8 @@ class Party
     {
         return $this->persons;
     }
+
+    public function getBalance(){
+        return $this->balance;
+    }
 }

@@ -22,10 +22,10 @@ Geo\AppBundle\Entity\Transaction:
       length: 65535
 
   manyToOne:
-    person:
+    payer:
       targetEntity: Person
       joinColumn:
-        name: person_id
+        name: payer_id
         referencedColumnName: id
     party:
       targetEntity: Party

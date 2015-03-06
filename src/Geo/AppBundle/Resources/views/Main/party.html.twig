@@ -1,159 +1,97 @@
 <script type="text/javascript">
-$(function(){
-  $('.ui.accordion').accordion();
-  $('.ui.dropdown').dropdown();
-})
+    $(function () {
+        $('.ui.accordion').accordion();
+        $('.ui.dropdown').dropdown();
+    })
 </script>
 <div class="ui top attached tertiary segment" style="margin-top:0">
 
-  <div class="ui icon circle top left pointing dropdown">
-    <i class="icon bars"></i> <strong>{{party.name}}</strong>
-    <div class="menu">
-      <a href="main/party_edit/{{party.id}}" class="item modal">
-        <i class="icon pencil"></i> Edit
-      </a>
-      <a href="main/party_delete/{{party.id}}" class="item modal">
-        <i class="icon remove"></i> Delete
-      </a>
-    </div>
-  </div>
+    <div class="ui icon circle top left pointing dropdown">
+        <i class="icon bars"></i> <strong>{{ party.name }}</strong>
 
-  <div class="ui divided horizontal list" style="float:right;">
-    <div class="item">{{party.createdAt|date("d/m/Y")}}</strong></div>
-    <div class="item">{{party.balance|number_format(2, '.', ',')}}&euro;</strong></div>
-  </div>
+        <div class="menu">
+            <a href="main/party_edit/{{ party.id }}" class="item modal">
+                <i class="icon pencil"></i> Edit
+            </a>
+            <a href="main/party_delete/{{ party.id }}" class="item modal">
+                <i class="icon remove"></i> Delete
+            </a>
+        </div>
+    </div>
+
+    <div class="ui divided horizontal list" style="float:right;">
+        <div class="item">{{ party.createdAt|date("d/m/Y") }}</strong></div>
+        <div class="item">{{ party.balance|number_format(2, '.', ',') }}&euro;</strong></div>
+    </div>
 
 </div>
 
 <div class="ui attached segment">
-  <table class="ui small very compact definition celled table">
-    <thead>
-      <tr>
-        <th class="center aligned"></th>
-        <th class="center aligned">CG</th>
-        <th class="center aligned">VP</th>
-        <th class="center aligned">AA</th>
-        <th class="center aligned">IP</th>
-        <th class="center aligned">SP</th>
-        <th class="center aligned">JM</th>
-        <th class="center aligned">AM</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="center aligned">CG</td>
-        <td class="center aligned disabled"><i class="icon remove"></i></td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">35</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">10</td>
-      </tr>
-      <tr>
-        <td class="center aligned">VP</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned disabled"><i class="icon remove"></i></td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">45</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">10</td>
-      </tr>
-      <tr>
-        <td class="center aligned">AA</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">35</td>
-        <td class="center aligned disabled"><i class="icon remove"></i></td>
-        <td class="center aligned">10</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">0</td>
-      </tr>
-      <tr>
-        <td class="center aligned">IP</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">35</td>
-        <td class="center aligned disabled"><i class="icon remove"></i></td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">10</td>
-        <td class="center aligned">0</td>
-      </tr>
-      <tr>
-        <td class="center aligned">AM</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">35</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned disabled"><i class="icon remove"></i></td>
-        <td class="center aligned">10</td>
-        <td class="center aligned">0</td>
-      </tr>
-      <tr>
-        <td class="center aligned">JM</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">35</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">10</td>
-        <td class="center aligned disabled"><i class="icon remove"></i></td>
-        <td class="center aligned">0</td>
-      </tr>
-      <tr>
-        <td class="center aligned">SP</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">35</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned">10</td>
-        <td class="center aligned">0</td>
-        <td class="center aligned disabled"><i class="icon remove"></i></td>
-      </tr>
-    </tbody>
-  </table>
+    <table class="ui small very compact definition celled table">
+        <thead>
+        <tr>
+            <th class="center aligned"></th>
+            {% for person in party.persons %}
+                <th class="center aligned">{{ person.name }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for person1 in party.persons %}
+            <tr>
+                <td class="center aligned">{{ person1.name }}</td>
+
+                {% for person2 in party.persons %}
+                    {% if person1.id==person2.id %}
+                        <td class="center aligned disabled"><i class="icon remove"></i></td>
+                    {% else %}
+                        <td class="center aligned">00.00</td>
+                    {% endif %}
+                {% endfor %}
+
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+<div class="ui attached segment">
+    <div class="ui ribbon label">Transactions</div>
+    <div class="ui mini green icon button" style="float:right">
+        <i class="icon plus"></i> NEW
+    </div>
+    <div class="ui divided animated selection list">
+        {% if party.transactions is empty %}
+            <div class="ui message center aligned">No transactions yet</div>
+        {% endif %}
+        {% for transaction in party.transactions %}
+            <div class="item">
+                <div class="right floated compact ui big label">{{ transaction.amount|number_format(2) }}&euro;</div>
+                <div class="content">
+                    <div class="header">
+                        {{ transaction.comment|default("<i>No Comments</i>")|raw }}
+                    </div>
+                    <div class="description">
+                        <div class="ui divided horizontal list">
+                            <div class="item">
+                                21/02/2014
+                            </div>
+                            <div class="item">
+                                <abbr title="Payer">P</abbr>: {{ transaction.payer.name }}
+                            </div>
+                            <div class="item">
+                                <abbr title="Shares">S</abbr>:
+                                {% for share in transaction.shares %}
+                                    {{ share.person.name }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
 </div>
 
-<div class="ui attached segment">
-  <div class="ui ribbon label">Transactions</div>
-  <div class="ui mini green icon button" style="float:right">
-    <i class="icon plus"></i> NEW</div>
-  <div class="ui divided animated selection list">
-    <div class="item">
-      <div class="right floated compact ui big label">100&euro;</div>
-      <div class="content">
-        <div class="header">VP <i class="icon arrow right"></i> CG, VP, AA, IP, SP, JM, AM</div>
-        <div class="description">
-          <div class="ui divided horizontal list">
-            <div class="item">21/02/2014</div>
-            <div class="item">Lorem ipsum...</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="item popup" data-content="Lorem ipsum dolor sit amet.">
-      <div class="right floated compact ui big label">100&euro;</div>
-      <div class="content">
-        <div class="header">VP <i class="icon arrow right"></i> CG, VP, AA, IP, SP, JM, AM</div>
-        <div class="description">
-          <div class="ui divided horizontal list">
-            <div class="item">21/02/2014</div>
-            <div class="item">Lorem ipsum...</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="item popup" data-content="Lorem ipsum dolor sit amet.">
-      <div class="right floated compact ui big label">100&euro;</div>
-      <div class="content">
-        <div class="header">VP <i class="icon arrow right"></i> CG, VP, AA, IP, SP, JM, AM</div>
-        <div class="description">
-          <div class="ui divided horizontal list">
-            <div class="item">21/02/2014</div>
-            <div class="item">Lorem ipsum...</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+{{ dump(party) }}

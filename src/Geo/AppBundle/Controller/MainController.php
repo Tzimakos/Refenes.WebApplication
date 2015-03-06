@@ -17,7 +17,14 @@ class MainController extends Controller
      */
     public function mainAction()
     {
-        $parties = $this->getDoctrine()->getRepository("GeoAppBundle:Party")->findBy(array(), array('createdAt' => 'DESC'));
+        $parties = $this->getDoctrine()
+            ->getRepository("GeoAppBundle:Party")
+            ->findBy(
+                array(),
+                array(
+                    'createdAt' => 'DESC'
+                )
+            );
 
         return array(
             "parties" => $parties,
@@ -31,7 +38,10 @@ class MainController extends Controller
      */
     public function partyAction($id)
     {
-        $party = $this->getDoctrine()->getRepository("GeoAppBundle:Party")->findOneById($id);
+        $party = $this->getDoctrine()
+            ->getRepository("GeoAppBundle:Party")
+            ->findOneById($id);
+
         return array(
             "party" => $party,
         );

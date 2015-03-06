@@ -31,7 +31,7 @@ Geo\AppBundle\Entity\Party:
 
   oneToMany:
     transactions:
-      targetEntity: Party
+      targetEntity: Transaction
       mappedBy: party
 
   manyToOne:

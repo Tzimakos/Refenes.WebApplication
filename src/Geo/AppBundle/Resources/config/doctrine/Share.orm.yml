@@ -23,6 +23,7 @@ Geo\AppBundle\Entity\Share:
       joinColumn:
         name: transaction_id
         referencedColumnName: id
+
     person:
       targetEntity: Person
       joinColumn:
