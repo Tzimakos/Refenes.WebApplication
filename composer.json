@@ -2,7 +2,7 @@
   "name": "ChristosGeorgiou/Refenes",
   "license": "MIT",
   "type": "project",
-  "description": "",
+  "description": "Ιndividual share in a collective cost for food, entertainment , etc.",
   "autoload": {
     "psr-0": {
       "": "src/",

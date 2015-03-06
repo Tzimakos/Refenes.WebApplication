@@ -27,6 +27,11 @@ Geo\AppBundle\Entity\Transaction:
       joinColumn:
         name: person_id
         referencedColumnName: id
+    party:
+      targetEntity: Party
+      joinColumn:
+        name: party_id
+        referencedColumnName: id
 
   oneToMany:
     shares:

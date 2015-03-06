@@ -28,3 +28,15 @@ Geo\AppBundle\Entity\Party:
         inverseJoinColumns:
           person_id:
             referencedColumnName: id
+
+  oneToMany:
+    transactions:
+      targetEntity: Party
+      mappedBy: party
+
+  manyToOne:
+    user:
+      targetEntity: Geo\UserBundle\Entity\User
+      joinColumn:
+        name: user_id
+        referencedColumnName: id
