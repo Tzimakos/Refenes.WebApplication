@@ -47,4 +47,40 @@ class MainController extends Controller
         );
     }
 
+    /**
+     * @Route("/transaction", defaults={"id" = false})
+     * @Route("/transaction/{id}")
+     * @Template()
+     */
+    public function transactionAction(Request $request, $id)
+    {
+//        $registration = new Registration();
+//        $form = $this->createForm(new RegistrationType(), $registration);
+//        $form->handleRequest($request);
+//
+//        if ($form->isValid()) {
+//            $registration = $form->getData();
+//
+//            $user = $registration->getUser();
+//
+//            $hashedPassword = $this->container
+//                ->get('security.password_encoder')
+//                ->encodePassword($user, $user->getPassword());
+//
+//            $user->setPassword($hashedPassword);
+//
+//            $em = $this->getDoctrine()->getManager();
+//            $em->persist($user);
+//            $em->flush();
+//
+//            $response = new JsonResponse();
+//            return $response;
+//
+//        }
+
+        return array(
+           //'form' => $form->createView(),
+        );
+    }
+
 }

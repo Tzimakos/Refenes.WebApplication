@@ -57,16 +57,16 @@
 </div>
 <div class="ui attached segment">
     <div class="ui ribbon label">Transactions</div>
-    <div class="ui mini green icon button" style="float:right">
+    <a href="transaction" class="ui mini green icon button amodal" style="float:right">
         <i class="icon plus"></i> NEW
-    </div>
+    </a>
     <div class="ui divided animated selection list">
         {% if party.transactions is empty %}
             <div class="ui message center aligned">No transactions yet</div>
         {% endif %}
         {% for transaction in party.transactions %}
-            <div class="item">
-                <div class="right floated compact ui big label">{{ transaction.amount|number_format(2) }}&euro;</div>
+            <a href="transaction/{{ transaction.id }}" class="item amodal">
+                <div class="right floated compact ui big label">{{ transaction.amount|localizedcurrency('EUR') }}</div>
                 <div class="content">
                     <div class="header">
                         {{ transaction.comment|default("<i>No Comments</i>")|raw }}
@@ -74,7 +74,7 @@
                     <div class="description">
                         <div class="ui divided horizontal list">
                             <div class="item">
-                                21/02/2014
+                                {{ transaction.issuedAt|date('d/m/Y') }}
                             </div>
                             <div class="item">
                                 <abbr title="Payer">P</abbr>: {{ transaction.payer.name }}
@@ -88,10 +88,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         {% endfor %}
 
     </div>
 </div>
-
-{{ dump(party) }}

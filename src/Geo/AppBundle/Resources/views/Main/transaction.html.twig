@@ -1,0 +1,62 @@
+<form id="form-transaction" class="ui small modal">
+
+    <i class="close icon"></i>
+
+    <div class="header">
+        {% if ticket.id is defined %}
+            Edit Transaction - {{ transaction.issuedAt|date('d/m/Y') }}
+        {% else %}
+            Add Transaction
+        {% endif %}
+    </div>
+
+    <div class="ui form content">
+        <input class="" type="hidden" name="ticket_id" value="{{ transaction.id|default('') }}">
+
+        <table class="ui celled striped table">
+            <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th><abbr title="Participated">Partic.</abbr></th>
+                <th>Give</th>
+                <th>Recive<br><input type="checkbox"> Equal</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr>
+                <th class="right aligned collapsing" style="font-size:22px;">CG</th>
+                <td><input type="checkbox"> YES</td>
+                <td><input style="width:100px;text-align: center"></td>
+                <td><input style="width:100px;text-align: center"></td>
+            </tr>
+            <tr>
+                <th class="right aligned collapsing">CG</th>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th class="right aligned collapsing">CG</th>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="actions">
+        <button type="submit" class="ui green button ok">
+            <i class="icon checkmark"></i>
+            Save Transaction
+        </button>
+    </div>
+
+
+    <script type="text/javascript">
+        $(function () {
+        })
+    </script>
+</form>

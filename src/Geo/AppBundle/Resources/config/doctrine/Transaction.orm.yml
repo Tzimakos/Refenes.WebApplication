@@ -20,6 +20,8 @@ Geo\AppBundle\Entity\Transaction:
       type: text
       nullable: true
       length: 65535
+    issuedAt:
+      type: date
 
   manyToOne:
     payer:

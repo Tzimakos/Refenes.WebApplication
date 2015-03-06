@@ -14,6 +14,7 @@ class Transaction
     private $amount;
     private $shares;
     private $comment;
+    private $issuedAt;
 
     public function getId()
     {
@@ -44,11 +45,23 @@ class Transaction
     /**
      * Get amount
      *
-     * @return string 
+     * @return string
      */
     public function getAmount()
     {
         return $this->amount;
+    }
+
+    public function setIssuedAt($issuedAt)
+    {
+        $this->issuedAt = $issuedAt;
+
+        return $this;
+    }
+
+    public function getIssuedAt()
+    {
+        return $this->issuedAt;
     }
 
     /**
