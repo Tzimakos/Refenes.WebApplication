@@ -13,35 +13,50 @@
     <div class="ui form content">
         <input class="" type="hidden" name="ticket_id" value="{{ transaction.id|default('') }}">
 
-        <table class="ui celled striped table">
+        <table class="ui definition compact celled table">
             <thead>
             <tr>
-                <th>&nbsp;</th>
-                <th><abbr title="Participated">Partic.</abbr></th>
-                <th>Give</th>
-                <th>Recive<br><input type="checkbox"> Equal</th>
+                <th style="width:25%;"></th>
+                <th style="width:25%;" class="center aligned">
+                    <h3 style="margin:0">
+                        Paid <span id="paid_total" style="color:darkorange"><br><span>-</span>&euro;</span>
+                    </h3>
+                </th>
+                <th style="width:50%;" colspan="2" class="center aligned">
+                    <h3 style="margin:0">
+                        Share <span id="shares_total" style="color:darkorange;"><br><span>-</span>&euro;</span>
+                    </h3>
+                </th>
             </tr>
             </thead>
             <tbody>
+            {% for person in party.persons %}
+                <tr>
+                    <td class="right aligned">
+                        <h3 style="margin:0">{{ person.name }}</h3>
+                    </td>
+                    <td>
+                        <input id="paid_{{ person.id }}"
+                               class="center aligned paid"
+                               name="paid[{{ person.id }}]">
+                    </td>
+                    <td style="width:25%;">
+                        <input id="share_{{ person.id }}"
+                               class="center aligned shares"
+                               name="share[{{ person.id }}]">
+                    </td>
+                    <td style="width:25%;" class="center aligned">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox"
+                                   name="equal[{{ person.id }}]"
+                                   class="equal_chbx"
+                                   ref="#share_{{ person.id }}">
+                            <label>Equal</label>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
 
-            <tr>
-                <th class="right aligned collapsing" style="font-size:22px;">CG</th>
-                <td><input type="checkbox"> YES</td>
-                <td><input style="width:100px;text-align: center"></td>
-                <td><input style="width:100px;text-align: center"></td>
-            </tr>
-            <tr>
-                <th class="right aligned collapsing">CG</th>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th class="right aligned collapsing">CG</th>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
             </tbody>
         </table>
 
@@ -55,8 +70,115 @@
     </div>
 
 
+    <script src="/plugins/jquery-autotab-master/js/jquery.autotab.min.js"></script>
+
     <script type="text/javascript">
         $(function () {
+
+            function calculate_share() {
+                var _total_paid = 0
+
+                $(".paid").each(function () {
+                    var $this = $(this);
+                    if ($this.val().length) {
+                        var _value = $this.val()
+
+                        // This should be a regex in autotab
+                        _lastSymb = Math.max(_value.lastIndexOf("."), _value.lastIndexOf(","));
+                        if (_lastSymb >= 0) {
+                            _value = _value.substr(0, _lastSymb) + "~" + _value.substr(_lastSymb + 1);
+                            _value = _value.replace(".", "");
+                            _value = _value.replace(",", "");
+                            _value = _value.replace("~", ".");
+                        }
+                        _value = parseFloat(_value);
+
+                        $this.val(_value.toFixed(2));
+                        _total_paid += parseFloat(_value);
+                    }
+                });
+
+                if (_total_paid > 0) {
+                    $("#paid_total span").text(_total_paid.toFixed(2));
+                    $("#paid_total").fadeIn();
+                }
+                else {
+                    $("#paid_total").fadeOut(function () {
+                        $(this).find("span").empty();
+                    })
+                }
+
+                var _total_shares = 0;
+
+                $(".shares").each(function () {
+                    var $this = $(this)
+                    if ($this.val().length && !$this.is(":disabled")) {
+                        var _value = $this.val();
+
+                        // This should be a regex in autotab
+                        var _lastSymb = Math.max(_value.lastIndexOf("."), _value.lastIndexOf(","));
+                        if (_lastSymb >= 0) {
+                            _value = _value.substr(0, _lastSymb) + "~" + _value.substr(_lastSymb + 1);
+                            _value = _value.replace(".", "");
+                            _value = _value.replace(",", "");
+                            _value = _value.replace("~", ".");
+                        }
+                        _value = parseFloat(_value);
+
+                        $this.val(_value.toFixed(2));
+                        _total_shares += parseFloat(_value)
+                    }
+                });
+
+                var _equals = $(".shares:disabled").length;
+                var _diff = _total_paid - _total_shares;
+
+                $("#shares_total").css("color","darkgreen");
+                $(this).find("span").text("-")
+
+                if (_equals > 0) {
+                    var _share = _diff / _equals
+                    $(".shares:disabled").val(_share.toFixed(2))
+                    $("#shares_total span").text(_total_paid.toFixed(2));
+                }
+                else {
+                    if (_diff != 0) {
+                        $("#shares_total").css("color","darkred");
+                    }
+                    $("#shares_total span").text(_total_shares.toFixed(2));
+                }
+            }
+
+            $(".ui.checkbox").checkbox();
+
+            $(".equal_chbx").on("change", function () {
+                var $this = $(this),
+                        $target = $($this.attr("ref"));
+
+
+                if ($this.is(":checked")) {
+                    $target.attr("disabled", true);
+                    $target.fadeTo(750, 0.5);
+                }
+                else {
+                    $target.attr("disabled", false);
+                    $target.fadeTo(750, 1);
+                }
+
+                $target.val("");
+
+                calculate_share();
+            })
+
+            $('.paid, .shares').on("blur", function () {
+                calculate_share();
+            })
+
+            $('.paid, .shares').autotab({
+                format: "custom",
+                pattern: '[^0-9,\\.]',
+                maxlength: 10
+            });
         })
     </script>
 </form>

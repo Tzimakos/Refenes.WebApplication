@@ -44,11 +44,10 @@ $(function() {
           selector: {
             close: '.close',
           },
-          debug: true,
-          verbose: true
+          debug: false,
+          verbose: false
         }).modal("show")
 
-        $('[data-lorem]').lorem();
         $("#loader").fadeOut("slow");
       })
     })

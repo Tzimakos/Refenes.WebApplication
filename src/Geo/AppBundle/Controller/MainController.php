@@ -48,12 +48,25 @@ class MainController extends Controller
     }
 
     /**
-     * @Route("/transaction", defaults={"id" = false})
-     * @Route("/transaction/{id}")
+     * @Route("/transaction/{transaction_id}", defaults={"party_id" = false})
+     * @Route("/transaction/new/{party_id}", defaults={"transaction_id" = false})
      * @Template()
      */
-    public function transactionAction(Request $request, $id)
+    public function transactionAction(Request $request, $party_id, $transaction_id)
     {
+        if($transaction_id){
+            $transaction = $this->getDoctrine()
+                ->getRepository("GeoAppBundle:Transaction")
+                ->findOneById($transaction_id);
+
+            $party=$transaction->getParty();
+        }
+        else{
+            $party = $this->getDoctrine()
+                ->getRepository("GeoAppBundle:Party")
+                ->findOneById($party_id);
+        }
+
 //        $registration = new Registration();
 //        $form = $this->createForm(new RegistrationType(), $registration);
 //        $form->handleRequest($request);
@@ -79,7 +92,7 @@ class MainController extends Controller
 //        }
 
         return array(
-           //'form' => $form->createView(),
+            "party" => $party,
         );
     }
 
